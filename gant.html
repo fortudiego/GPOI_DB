@@ -2,16 +2,22 @@
 <head>
 <style>
 meter::-webkit-meter-bar {
-	    background: red;
-	    height: 100%;
+	    background: orange;
+	    height: 170%;
 	    width: 100%;
 	    box-sizing: border-box;
 }
 meter::-webkit-meter-optimum-value {
-	    background: yellow;
+	    background: green;
 	    height: 100%;
 	    box-sizing: border-box;
 	}
+.sposta { position: absolute; top: 150px; left: 270px; width: 108;}
+.sposta1 { position: absolute; top: 215px; left: 378px; width: 108; }
+.sposta2 { position: absolute; top: 280px; left: 489px; width: 40;}
+.sposta3 { position: absolute; top: 345px; left: 270px; width: 216;}
+.sposta4 { position: absolute; top: 400px; left: 489px; width: 40; }
+.sposta5 { position: absolute; top: 458px; left: 530px; width: 30; }
 </style>
 <title>
 Nome sw
@@ -27,11 +33,34 @@ Nome sw
 <td><a href="gant.html"> Gant </a></td>
 </tr>
 </table>
-<br><br> 
-<meter value="10" min="0" max="10">2 out of 10</meter><br><br>
-<meter value="5" min="0" max="10">2 out of 10</meter><br><br>
-<meter value="2" min="0" max="10">2 out of 10</meter><br><br>
-<meter value="7" min="0" max="10">2 out of 10</meter><br><br>
+<table height=100% width=100% border=2> 
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+
+
+</table>
+</table>
+<br><br><br>
+<table border=2>
+<tr>
+<td>30</td><td>60</td><td>90</td><td>120</td><td>150</td></tr>
+<tr><td>
+<meter   value="5" min="0" max="6"> 2 out of 10</meter>
+
+</td></tr>
+<div><meter  value="10" min="0" max="10">2 out of 10</meter><br><br></div>
+<h3> Aggiungi Motore 1 30' (LS 15') <meter class="sposta"  value="5" min="0" max="6"> 2 out of 10</meter><br><br> </h3> 
+
+<h3> Aggiungi Ruota 1 30' (LS 45')<meter class="sposta1"value="5" min="0" max="6">2 out of 10</meter><br><br> </h3>  
+
+<h3> Ispezione 10' (LS 75') <meter class="sposta2" value="6" min="0" max="10">2 out of 10</meter><br><br> </h3> 
+
+<h3> Aggiungi Motore 2 60'<meter class="sposta3" value="10" min="0" max="10">4 out of 10</meter><br><br> </h3> 
+
+<h3> Aggiungi Ruota 2 15'<meter class="sposta4" value="10" min="0" max="10">2 out of 10</meter><br><br> </h3> 
+
+<h3> Ispezione 10'<meter class="sposta5" value="10" min="0" max="10">2 out of 10</meter><br><br> </h3> 
+<div><meter class="sposta5" value="10" min="0" max="10">2 out of 10</meter><br><br></div>
+
 
 </body>
 </html>
