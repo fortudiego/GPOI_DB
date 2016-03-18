@@ -25,7 +25,7 @@
       <br><br>
       <center>
          <form action="progetto.php" method="post">
-            <input name="btn_add" type="submit" value="Aggiungi task" />
+            <input name="btn_add" type="submit" value="Aggiungi task / Salva" />
             <input name="end_task" type="submit" value="Termina" /><br><br>
             <table align=center border=2>
                <tr>
