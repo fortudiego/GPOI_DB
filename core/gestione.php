@@ -14,6 +14,8 @@
 			require 'config.php';
 			$numero = 1;
 			$pred = "";
+
+			//il paramentro è impostato a 0 solo quando si setta il cookie
 			if($par==0){
 				$pred = "0";
 			}
@@ -33,13 +35,13 @@
 	                     <input type=\"text\" name=\"nome_task\" value='' required/>
 	                  </td>
 	                  <td>
-	                     <input type=\"text\" name=\"durata\" value='' required/>
+	                     <input type=\"text\" name=\"durata\" value=''/>
 	                  </td>
 	                  <td>
-	                     <input type=\"text\" name=\"partenza\" value='' required/>
+	                     <input type=\"text\" name=\"partenza\" value=''/>
 	                  </td>
 	                  <td>
-	                     <input type=\"text\" name=\"predecessori\" value='".$pred."' required/>
+	                     <input type=\"text\" name=\"predecessori\" value='".$pred."'/>
 	                  </td>
 	               </tr>";
         }
@@ -75,17 +77,11 @@
 				echo "Errore inserimento task: ".$conn->error;
 			}
 			if($numero == 1){
-				$this->alert("Il primo task non può avere predecessori");  
+				//$this->alert("Il primo task non può avere predecessori");  
 			}
 			else{
 				$this->ins_predecessori($numero);
 			}
-		}
-
-
-
-		function predecessori($task){
-
 		}
 
 		function ins_predecessori($num_task){
@@ -135,35 +131,62 @@
 			}
 		}
 
+		function get_predecessori($numero_task){
+			require 'config.php';
+			$query_get_pred = "SELECT * FROM predecessore WHERE IdT = $numero_task";
+			$result_get_pred = $conn->query($query_get_pred);
+			$str_predecessori = "";
 
+			if(!$result_get_pred){
+							echo "Errore1 : ".$conn->error;
+				}
+
+			while ($righe = mysqli_fetch_assoc($result_get_pred)) {
+				$task_precendente = $righe['IdP'];
+				$query_idp = "SELECT Num_Task FROM Task WHERE Id_Task = ".$task_precendente;
+				$result_idp = $conn->query($query_idp);
+
+				if(!$result_idp){
+					echo "Errore : ".$conn->error;
+				}
+
+				//prendo l'id del task precedente e costruisco la stringa
+				$row_idp = $result_idp->fetch_object();
+				$id = ($row_idp->Num_Task);
+			    $str_predecessori = $str_predecessori."; ".$id."; ";
+			    echo $str_predecessori;
+			}
+			echo $str_predecessori;
+		}
 
 		function stampa(){
 			require 'config.php';
 			if(isset($_COOKIE['user'])){
 				$progetto = $_COOKIE['user'];
 
-			$query_est = "SELECT * FROM Task WHERE Id_Progetto_E = ".$progetto;
-			$risultato_estrai = $conn->query($query_est); 
-				while($righe = mysqli_fetch_assoc($risultato_estrai)){
-					//importante 
-					echo "
-	                    <tr>
-	                        <td>
-	                           <input style=\"text-align:center;\" value='".$righe['Num_Task']."' type='text'  readonly/>
-	                        </td>
-	                        <td>
-	                           <input value='".$righe['Nome']."' type='text'  />
-	                        </td>
-	                        <td>
-	                           <input value='".$righe['Durata']."' type='text'  />
-	                        </td>
-	                        <td>
-	                           <input value='".$righe['Partenza']."' type='text'  />
-	                        </td>
-	                        <td>
-	                           <input value='".$righe['LateStart']."' type='text'  />
-	                        </td>
-	                    </tr> ";
+				$query_est = "SELECT * FROM Task WHERE Id_Progetto_E = ".$progetto;
+				$risultato_estrai = $conn->query($query_est); 
+					while($righe = mysqli_fetch_assoc($risultato_estrai)){
+ 
+						//importante 
+						echo "
+		                    <tr>
+		                        <td>
+		                           <input style=\"text-align:center;\" value='".$righe['Num_Task']."' type='text'  readonly/>
+		                        </td>
+		                        <td>
+		                           <input value='".$righe['Nome']."' type='text'  />
+		                        </td>
+		                        <td>
+		                           <input value='".$righe['Durata']."' type='text'  />
+		                        </td>
+		                        <td>
+		                           <input value='".$righe['Partenza']."' type='text'  />
+		                        </td>
+		                        <td>
+		                           <input value='".$this->get_predecessori($righe['Num_Task'])."' type='text'  />
+		                        </td>
+		                    </tr> ";
 				}
 				$this->stampa_righa(1);
 			}
