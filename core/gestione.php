@@ -48,7 +48,7 @@
 
 		function setta_cookie(){
 			require 'config.php';
-			$sql = "INSERT INTO `gpoi_work`.`Progetto` (`Id_Progetto`, `Titolo`) VALUES (NULL, '');";
+			$sql = "INSERT INTO `gpoi_work`.`progetto` (`Id_Progetto`, `Titolo`) VALUES (NULL, '');";
 	        
 	        if ($conn->query($sql) === TRUE) {
 	            $last_id = $conn->insert_id;
@@ -143,7 +143,7 @@
 
 			while ($righe = mysqli_fetch_assoc($result_get_pred)) {
 				$task_precendente = $righe['IdP'];
-				$query_idp = "SELECT Num_Task FROM Task WHERE Id_Task = ".$task_precendente;
+				$query_idp = "SELECT Num_Task FROM task WHERE Id_Task = ".$task_precendente;
 				$result_idp = $conn->query($query_idp);
 
 				if(!$result_idp){
@@ -153,10 +153,11 @@
 				//prendo l'id del task precedente e costruisco la stringa
 				$row_idp = $result_idp->fetch_object();
 				$id = ($row_idp->Num_Task);
-			    $str_predecessori = $str_predecessori."; ".$id."; ";
-			    echo $str_predecessori;
+			    $str_predecessori = $id."; ".$str_predecessori."";
+			    //echo $str_predecessori;
 			}
-			echo $str_predecessori;
+			//$this->alert($str_predecessori);
+			return $str_predecessori;
 		}
 
 		function stampa(){
@@ -164,8 +165,11 @@
 			if(isset($_COOKIE['user'])){
 				$progetto = $_COOKIE['user'];
 
-				$query_est = "SELECT * FROM Task WHERE Id_Progetto_E = ".$progetto;
+				$query_est = "SELECT * FROM task WHERE Id_Progetto_E = $progetto";
 				$risultato_estrai = $conn->query($query_est); 
+				if(!$risultato_estrai){
+					echo "Errore: ".$conn->error;
+				}
 					while($righe = mysqli_fetch_assoc($risultato_estrai)){
  
 						//importante 
@@ -184,7 +188,7 @@
 		                           <input value='".$righe['Partenza']."' type='text'  />
 		                        </td>
 		                        <td>
-		                           <input value='".$this->get_predecessori($righe['Num_Task'])."' type='text'  />
+		                           <input value='".$this->get_predecessori($righe['Id_Task'])."' type='text'  />
 		                        </td>
 		                    </tr> ";
 				}
